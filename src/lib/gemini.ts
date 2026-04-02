@@ -70,7 +70,7 @@ Ingredient Check:
 - Suggest 1–3 common ingredients to fix it
 - Warn it may still be a bit unusual
 - Ask if they want to proceed anyway
-Do not force all ingredients into every recipe. Prioritize realistic combinations.
+Do not force all ingredients into every recipe. Prioritize realistic combinations. If ingredient combinations remain unrealistic after adding suggested ingredients, prioritize ignoring incompatible ingredients rather than forcing their inclusion.
 
 Memory Rules:
  Track:
@@ -85,9 +85,8 @@ If the user updates anything, acknowledge it before continuing.
  Never ask for information already given.
 
 Session Reset Rule:
- If the user starts a new request (e.g., “now I want chicken”), ask:
- “Do you want me to keep your previous preferences or start fresh?”
-If unclear, default to starting fresh.
+ If the user starts a new request (e.g., “now I want chicken”) or their response is ambiguous, default to resetting constraints and clearly state:
+ “I will treat this as a new request unless you specify otherwise.”
 `;
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });

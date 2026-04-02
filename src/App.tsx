@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Utensils, RefreshCw, Trash2, Info, ChevronRight, User, Bot } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Send, Utensils, RefreshCw, User, Bot } from 'lucide-react';
+import { motion } from 'motion/react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { sendMessage } from './lib/gemini';
@@ -22,7 +22,6 @@ export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -87,78 +86,25 @@ export default function App() {
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans">
-      {/* Sidebar - Memory Tracker */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.aside
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 320, opacity: 1 }}
-            exit={{ width: 0, opacity: 0 }}
-            className="bg-white border-r border-slate-200 flex flex-col overflow-hidden shadow-sm"
-          >
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-indigo-600 font-bold text-2xl font-serif">
-                <Utensils className="w-7 h-7" />
-                <span>FlavourFinder</span>
-              </div>
-              <button 
-                onClick={() => setIsSidebarOpen(false)}
-                className="p-1 hover:bg-slate-100 rounded-md lg:hidden"
-              >
-                <ChevronRight className="w-5 h-5 rotate-180" />
-              </button>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-6 space-y-8">
-              <section>
-                <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Info className="w-3 h-3" />
-                  About FlavourFinder
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  I'm your personal meal planning assistant. Tell me what you have in your fridge or any dietary goals, and I'll whip up some ideas!
-                </p>
-              </section>
-
-              <section className="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100">
-                <h3 className="text-sm font-semibold text-indigo-900 mb-2">Quick Tips</h3>
-                <ul className="text-xs text-indigo-800 space-y-2 list-disc pl-4">
-                  <li>Mention ingredients you want to use</li>
-                  <li>Specify dietary restrictions (e.g. Vegan, GF)</li>
-                  <li>Ask for a recipe once you see a meal you like</li>
-                </ul>
-              </section>
-
-              <div className="pt-4">
-                <button
-                  onClick={resetSession}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Start Fresh
-                </button>
-              </div>
-            </div>
-          </motion.aside>
-        )}
-      </AnimatePresence>
-
       {/* Main Chat Area */}
       <main className="flex-1 flex flex-col relative min-w-0">
         {/* Header */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center px-6 justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            {!isSidebarOpen && (
-              <button 
-                onClick={() => setIsSidebarOpen(true)}
-                className="p-1.5 hover:bg-slate-100 rounded-md text-indigo-600"
-              >
-                <Utensils className="w-5 h-5" />
-              </button>
-            )}
-            <h2 className="font-semibold text-slate-800">Meal Planning Session</h2>
+            <div className="flex items-center gap-2 text-indigo-600 font-bold text-xl font-serif mr-2">
+              <Utensils className="w-6 h-6" />
+              <span>FlavourFinder</span>
+            </div>
+            <h2 className="font-semibold text-slate-800 border-l border-slate-200 pl-3 hidden sm:block">Meal Planning Session</h2>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={resetSession}
+              className="flex items-center gap-2 py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Start Fresh
+            </button>
             <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               AI Active
